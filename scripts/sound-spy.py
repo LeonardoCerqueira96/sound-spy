@@ -1,14 +1,7 @@
 import numpy as np
 import imageio
-import scipy.io.wavfile as wav
+import soundfile as sf
 import sys
-
-def normalize_between(data, min_t, max_t):
-    data = np.copy(data)
-    data = (data - np.min(data)) / (np.max(data) - np.min(data))
-    data = data * (max_t - min_t) + min_t
-    
-    return data
 
 def int_to_bin(integer, size):
     return (("{0:0" + str(size) + "b}").format(integer))
@@ -48,25 +41,31 @@ def encode():
     seed = sys.argv[2].rstrip()
     np.random.seed(int.from_bytes(seed.encode(), "little") % (2**32 - 1))
 
-    # Reading the wav file and calculating the space required for hiding
+    # Reading the wav file
     wav_filename = sys.argv[3].rstrip()
-    wav_rate, wav_data = wav.read(wav_filename)
+    wav_data, wav_rate = sf.read(wav_filename, dtype='int16')
 
+    # If stereo, convert to mono
     if (type(wav_data[0]) is np.ndarray):
         wav_data = (wav_data[:, 0] + wav_data[:, 1]) // 2
-    wav_data = normalize_between(wav_data, 0, 255).astype(np.uint8)
+    
+    # Convert samples from int16 to uint16
+    wav_data = (wav_data.astype(int) + (2**15 - 1)).astype(np.uint16)
 
-    required_space = 32*2 + len(wav_data) * 8
+    # Calculating required space for hiding
+    required_space = 32*2 + len(wav_data) * 16
 
     # Reading the image file and calculating the available space for hiding
     img_filename = sys.argv[4].rstrip()
-    img = imageio.imread(img_filename)
+    img = imageio.imread(img_filename).astype(np.uint8)
     available_space = (img.shape[0] * img.shape[1] * img.shape[2] * 8) // 4
 
     if (available_space < required_space):
         print("The image provided is not big enough to store the sound file")
-        print("It needs, at least, an image of " + str(required_space * 4) + " bits")
         sys.exit(-1)
+
+    # Reading the name of the output destination
+    img_output_dest = sys.argv[5].rstrip()
 
     # Generating the positions using the seed
     random_positions = np.arange(img.shape[0] * img.shape[1] * img.shape[2])
@@ -81,10 +80,10 @@ def encode():
     # Hiding the samples
     pos = 32
     for sample in wav_data:
-        hide_int(sample, img, random_positions[pos : pos + 4])
-        pos += 4
+        hide_int(sample, img, random_positions[pos : pos + 8])
+        pos += 8
 
-    imageio.imwrite("out.png", img)
+    imageio.imwrite(img_output_dest, img)
 
     return
 
@@ -96,6 +95,9 @@ def decode():
     # Reading the image file
     img_filename = sys.argv[3].rstrip()
     img = imageio.imread(img_filename)
+
+    # Reading the name of the output destination
+    wav_output_dest = sys.argv[4].rstrip()
 
     # Recovering the positions used for hiding using the seed
     positions = np.arange(img.shape[0] * img.shape[1] * img.shape[2])
@@ -111,15 +113,16 @@ def decode():
     wav_data = np.zeros(total_samples)
     pos = 32
     for i in np.arange(total_samples):
-        sample = get_int(img, positions[pos : pos + 4])
-        wav_data[i] = np.uint8(sample)
-        pos += 4
+        sample = get_int(img, positions[pos : pos + 8])
+        wav_data[i] = np.uint16(sample)
+        pos += 8
 
-    wav.write("out.wav", wav_rate, wav_data)
+    # Converting samples to int16
+    wav_data = (wav_data.astype(int) - (2**15 - 1)).astype(np.int16)
+
+    sf.write(wav_output_dest, wav_data, wav_rate, 'PCM_16')
 
     return
-
-
 
 encode_flag = "-e"
 decode_flag = "-d"
