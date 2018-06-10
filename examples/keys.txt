@@ -1,0 +1,3 @@
+orchestra_hidden: "tom&jerry"
+collector_hidden: "harbinger"
+garrus_hidden: "vakarian"
