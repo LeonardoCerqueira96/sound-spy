@@ -14,7 +14,7 @@ dentro da imagem
 
 # Arquivos utilizados como exemplos:
 - Imagens (imagens .jpg foram convertidas para formato .png):
-	* orchestra.jpg: http://www.blurbpoint.com/blog/wp-content/uploads/2013/09/Website-Traffic.jpg
+	* orchestra.jpg: http://www.senzaspine.com/wp-content/uploads/2016/06/20140415_PROMENADE.jpg
 	* collector.jpg: https://i.ytimg.com/vi/rRVCTcLNkp0/maxresdefault.jpg
 	* garrus.png: https://vignette.wikia.nocookie.net/masseffect/images/d/dc/GarrusME200.png/revision/latest?cb=20100307064656
 - Soms (todos em formato WAV 16 PCM Mono):
@@ -30,7 +30,7 @@ bits menos significativos de posições da imagem geradas aleatoriamente
 - O mesmo é feito para cada sample do arquivo
 - A imagem modificada é salva
 
-# M?todo - Recuperando:
+# Método - Recuperando:
 - A chave fornecida ao programa é usada como seed para gerar os mesmos
 números aleatórios da fase de esconder
 - Primeiramente, o valor de sample rate do arquivo escondido é recuperado
