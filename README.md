@@ -38,3 +38,8 @@ dos bits menos significativos das posições "aleatórias" da imagem
 - O mesmo é feito para o número total de samples do arquivo, N
 - O mesmo é feito N vezes para recuperar as samples em significativos
 - Os dados recuperados são usados para montar e salvar o arquivo .wav
+
+# Como usar:
+- Esconder: "$ py sound_spy.py" -e <key> <wav to hide> <png where it will be hidden> <png output file>
+- Recuperar: "$ py sound_spy.py" -d <key> <png with hidden wav> <wav output file>
+  
