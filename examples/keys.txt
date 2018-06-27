@@ -1,3 +1,4 @@
 orchestra_hidden: "tom&jerry"
 collector_hidden: "harbinger"
 garrus_hidden: "vakarian"
+pikachu_hidden: "the_very_best"

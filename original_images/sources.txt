@@ -1,3 +1,5 @@
 orchestra: http://www.blurbpoint.com/blog/wp-content/uploads/2013/09/Website-Traffic.jpg
 collector: https://i.ytimg.com/vi/rRVCTcLNkp0/maxresdefault.jpg
 garrus: https://vignette.wikia.nocookie.net/masseffect/images/d/dc/GarrusME200.png/revision/latest?cb=20100307064656
+pikachu: https://cdn.vox-cdn.com/thumbor/MqPlQZ9oflyDJDeRCK8lJUnPu0I=/0x0:1000x500/1200x800/filters:focal(420x170:580x330)/cdn.vox-cdn.com/uploads/chorus_image/image/57681229/Pokemon_Pikachus_1000x500.0.jpg
+mario: http://www.wtfgamersonly.com/wp-content/uploads/2015/08/super_mario_bros__world_by_lwiis64-d32ybh0.jpg
