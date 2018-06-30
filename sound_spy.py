@@ -88,16 +88,18 @@ def encode(seed, wav_filename, img_filename, bits_n, img_output_dest):
     hide_int(len(wav_data), 32, img, random_positions[(32 // bits_n) : 2 * (32 // bits_n)])
 
     # Hiding the samples
-    pr_str = "Progress: 0%"
-    print(pr_str, end='')
-    backspace(len(pr_str))
+	# Uncomment #!!!# and '''!!! lines to activate progress display
+	# It's deactivated by default because it slows down execution
+    #!!!# pr_str = "Progress: 0%"
+    #!!!# print(pr_str, end='')
+    #!!!# backspace(len(pr_str))
 
     pos = 2 * (32 // bits_n)
-    k = 0
+    #!!!# k = 0
     for sample in wav_data:
         hide_int(sample, 16, img, random_positions[pos : pos + (16 // bits_n)])
         pos += (16 // bits_n)
-
+        '''!!!		
         k += 1
         progress = k / len(wav_data)
         pr_str = "Progress: " + "{:.2f}".format(progress * 100) + "%"
@@ -107,8 +109,7 @@ def encode(seed, wav_filename, img_filename, bits_n, img_output_dest):
             backspace(len(pr_str))
         else:
             print("")
-        
-
+        '''
     imageio.imwrite(img_output_dest, img)
     print("Done")
 
@@ -132,18 +133,20 @@ def decode(seed, img_filename, bits_n, wav_output_dest):
     total_samples = get_int(32, img, positions[(32 // bits_n) : 2 * (32 // bits_n)])
 
     # Recovering the samples
-    pr_str = "Progress: 0%"
-    print(pr_str, end='')
-    backspace(len(pr_str))
+	# Uncomment #!!!# and '''!!! lines to activate progress display
+	# It's deactivated by default because it slows down execution
+    #!!!# pr_str = "Progress: 0%"
+    #!!!# print(pr_str, end='')
+    #!!!# backspace(len(pr_str))
 
     wav_data = np.zeros(total_samples)
     pos = 2 * (32 // bits_n)
-    k = 0
+    #!!!# k = 0
     for i in np.arange(total_samples):
         sample = get_int(16, img, positions[pos : pos + (16 // bits_n)])
         wav_data[i] = np.uint16(sample)
         pos += (16 // bits_n)
-
+        '''!!!
         k += 1
         progress = k / total_samples
         pr_str = "Progress: " + "{:.2f}".format(progress * 100) + "%"
@@ -153,7 +156,7 @@ def decode(seed, img_filename, bits_n, wav_output_dest):
             backspace(len(pr_str))
         else:
             print("")
-
+        '''
     # Converting samples to int16
     wav_data = (wav_data.astype(int) - (2**15 - 1)).astype(np.int16)
 
